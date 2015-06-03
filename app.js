@@ -1,4 +1,5 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
 var dbConf = require('./conf/dbConf');
@@ -14,6 +15,7 @@ mongoose.connect(dbConf.uri, function(err, response){
 
 var app = express();
 
+app.use(bodyParser.json());
 app.use(logger);
 app.use('/users', users);
 
