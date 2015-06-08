@@ -4,7 +4,7 @@ module.exports = {
 			code: 404,
 			message: 'Not found resource.'
 		},
-		error: {
+		internal: {
 			code: 500
 		}
 	},
