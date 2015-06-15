@@ -2,12 +2,12 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-var dbConf = require('./conf/dbConf');
+var db_conf = require('./conf/db-conf');
 var logger = require('./utils/logger');
 var users = require('./routes/users');
 var m_error = require('./middlewares/errors');
 
-mongoose.connect(dbConf.uri, function(err, response){
+mongoose.connect(db_conf.uri, function(err, response){
 	if (err){
 		throw err;
 	}
