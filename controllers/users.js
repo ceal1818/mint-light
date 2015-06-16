@@ -1,7 +1,8 @@
 //Importamos el model mongoose user.
 var User = require('../models/user'),
 	//Importamos las constantes de respuesta users.
-	users_responses = require('../enums/rest-responses').users;
+	users_responses = require('../enums/rest-responses').users,
+	ListUsersService = require('../services/users/list');
 	//Importamos la librería underscore que es una utilidad para el uso de objetos, colecciones en JS.
 	_ = require('underscore');
 
@@ -64,17 +65,26 @@ module.exports = {
 	* list Método encargado de devolver todas las instancias de la entidad user.
 	*/
 	list: function(request, response, next){
+		var listUserServices = new ListUsersService();
+
+		listUserServices.execute(
+			{}, 
+			function(code, users){
+				response.status(code).json(users);
+			}, 
+			function(err){
+				next(err);
+			}
+		);
 		/*
 		* Se llama al método find del model mongoose sin argumentos de búsqueda, 
 		* que devuelve todos los documentos en la colección user. La ejecución asincrona
 		* de este método hace uso de una función callback que recibe como parametros: 
 		* err y users.
-		*/
 		User.find({}, function(err, users){
-			/*
 			* Si internamente se produce un error, se llama al próximo middleware 
 			* que controla los errores, pasandole un mensaje.
-			*/			
+					
 			if (err){
 				next({name: 'internal', message: 'Error list resources.'});
 			}
@@ -83,6 +93,7 @@ module.exports = {
 				users_responses.get.code
 				).json(users);
 		});
+		*/
 	},
 
 	/*

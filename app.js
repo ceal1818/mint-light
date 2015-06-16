@@ -33,7 +33,6 @@ var app = express();
 app.use(bodyParser.json());
 //Uso del middleware que controlará los logs.
 app.use(logger);
-
 /*
 * Uso de los routes de users como un middleware asociado a una ruta principal, 
 * en este caso '/users'.
