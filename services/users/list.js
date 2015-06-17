@@ -2,10 +2,10 @@ var _ = require('underscore'),
 	user_model = require('../../models/user'),
 	get_response = require('../../enums/rest-responses').users.get;
 
-var ListUsersServices = function(){
+var ListUsersService = function(){
 };
 
-ListUsersServices.prototype = _.extend(ListUsers.prototype, {
+ListUsersService.prototype = _.extend(ListUsersService.prototype, {
 	model: user_model,
 
 	execute: function(data, success, unsuccess){
@@ -19,4 +19,4 @@ ListUsersServices.prototype = _.extend(ListUsers.prototype, {
 	}
 });
 
-module.exports = ListUsersServices;
+module.exports = ListUsersService;
