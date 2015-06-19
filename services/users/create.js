@@ -11,7 +11,7 @@ CreateUserService.prototype = _.extend(CreateUserService.prototype, {
 	execute: function(data, success, unsuccess){
 		var that = this;
 
-		this.model.count({}, function(err, count){
+		this.model.findOne().sort('-uid').exec(function(err, model){
 			/*
 			* Si internamente se produce un error, se llama al próximo middleware 
 			* que controla los errores, pasandole un mensaje.
@@ -24,7 +24,7 @@ CreateUserService.prototype = _.extend(CreateUserService.prototype, {
 			* que guardaremos en la colección users. Guardamos el UID que 
 			* estamos generando.
 			*/
-			_.extend(data, {uid: (count + 1)});
+			_.extend(data, {uid: (model.uid + 1)});
 			//Instanciamos un model mongoose User con los datos del JSON.
 			var user = new that.model(data);
 			/*
