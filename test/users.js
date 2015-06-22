@@ -1,14 +1,34 @@
 var _ = require('underscore'),
+	mongoose = require('mongoose'),
 	request = require('supertest'),
 	chai = require('chai'),
-	app = require('../app'),
-	fields_valid = ["first_name", "last_name", "email", "uid"],
-	user1 = {"first_name": "test1", "last_name": "test1", "email":"test1@test.com"},
-	user2 = {"first_name": "test2", "last_name": "test2", "email":"test2@test.com"},
-	user3 = {"first_name": "test3 test3", "last_name": "test3 test3", "email":"test1@test.com"},
-	user4 = {"first_name": "test4", "last_name": "test4", "email":"test2@test.com"};
+	data = require('./data/users'),
+	app;
 
-app.listen(3000);
+before(function(){
+	var init_app = require('../init-app'),
+		init_ds = require('../init-ds'),
+		conf = require('../conf/enviroments'),
+		user_model = require('../models/user');
+
+	init_ds(conf('test'));
+	app = init_app(conf('test'));
+	app.listen(300);
+
+	user_model.remove({}, function(err){
+		if (err){
+			throw err;
+		}
+		
+		var user = new user_model(data.user0);
+		user.save(function(err){
+			if (err){
+				throw err;
+			}
+		});
+	});
+
+});
 
 describe("Test users module: ", function(){
 
@@ -42,7 +62,7 @@ describe("Test users module: ", function(){
 				.expect('Content-Type',/json/)
 				.end(function(err, res){
 					var assert = chai.assert;
-					_.forEach(fields_valid, function(field_valid){
+					_.forEach(data.fields_valid, function(field_valid){
 						assert.property(res.body, field_valid);
 					});
 					done();
@@ -59,13 +79,13 @@ describe("Test users module: ", function(){
 		it("HTTP status is equal to 201, when this service executed successfully.", function(done){
 			request(app)
 				.post('/users')
-				.send(user1)
+				.send(data.user1)
 				.expect(201, done);
 		});
 		it("Response is JSON format and contains all users fields, when this service executed successfully.", function(done){
 			request(app)
 				.post('/users')
-				.send(user2)
+				.send(data.user2)
 				.expect('Content-Type',/json/)
 				.end(function(err, resp){
 					if (err){
@@ -73,7 +93,7 @@ describe("Test users module: ", function(){
 					}
 					var assert = chai.assert;
 					assert(resp.status, 201);
-					_.forEach(fields_valid, function(field_valid){
+					_.forEach(data.fields_valid, function(field_valid){
 						assert.property(resp.body, field_valid);
 					});
 					done();
@@ -85,14 +105,14 @@ describe("Test users module: ", function(){
 		it("HTTP status is equal to 200, when this service executed successfully.", function(done){
 			request(app)
 				.put('/users/1')
-				.send(user3)
+				.send(data.user3)
 				.expect(200, done)
 		});
 
 		it("HTTP status is equal to 404, when it don't found.", function(done){
 			request(app)
 				.put('/users/99999999')
-				.send(user4)
+				.send(data.user4)
 				.expect(404, done);
 		});
 	});
@@ -113,8 +133,7 @@ describe("Test users module: ", function(){
 
 		it("HTTP status is equal to 404, when it don't found.", function(done){
 			request(app)
-				.put('/users/99999999')
-				.send(user4)
+				.del('/users/99999999')
 				.expect(404, done);
 		});
 	});

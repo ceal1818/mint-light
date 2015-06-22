@@ -3,17 +3,14 @@ var express = require('express'),
 	//Importamos la librería body-parser para manejar el cuerpo de la petición HTTP.
 	bodyParser = require('body-parser'),
 	morgan = require('morgan');
-	//Configuración de base de datos en formato JS enum.
-	conf_enviroment = require('./conf/enviroments'),
 	//Routes definidos y controlados para una entidad especifica.
 	users = require('./routes/users'),
 	//Implementación de middleware de control de errores.
 	m_error = require('./middlewares/errors');
 
-module.exports = function(enviroment){
+module.exports = function(conf){
 	//Instanciación del contexto de la aplicación que representa en si mismo el servidor.
-	var app = express(),
-		conf = conf_enviroment[enviroment];
+	var app = express();
 	/*
 	* La declaración de los middleware en express es sumamente importante porque así 
 	* se indica como seguirá el flujo de ejecución en modo pila.
@@ -31,13 +28,6 @@ module.exports = function(enviroment){
 	app.use('/users', users);
 	//Uso de middleware de errores.
 	app.use(m_error);
-
-	//Conexión a base de datos mongodb con datos de conexión proporcionados por un enum.
-	mongoose.connect(conf.db.uri, function(err, response){
-		if (err){
-			throw err;
-		}
-	});
 
 	return app;
 };
