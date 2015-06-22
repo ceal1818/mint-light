@@ -8,10 +8,10 @@ module.exports = {
 	],
 
 	user0: {
-		"uid": 0,
 		"first_name": "test", 
 		"last_name": "test", 
-		"email":"test@test.com"
+		"email":"test@test.com",
+		"uid": 0
 	},
 
 	user1: {
