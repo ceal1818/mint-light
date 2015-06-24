@@ -4,7 +4,7 @@ var express = require('express'),
 	bodyParser = require('body-parser'),
 	morgan = require('morgan');
 	//Routes definidos y controlados para una entidad especifica.
-	users = require('./routes/users'),
+	users = require('./modules/users/routes'),
 	//Implementación de middleware de control de errores.
 	m_error = require('./middlewares/errors');
 

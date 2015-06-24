@@ -1,6 +1,6 @@
 var _ = require('underscore'),
-	user_model = require('../../models/user'),
-	put_response = require('../../enums/rest-responses').users.put;
+	user_model = require('../../../models/user'),
+	put_response = require('../../../enums/rest-responses').users.put;
 
 var UpdateUserService = function(){
 };

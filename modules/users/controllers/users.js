@@ -1,14 +1,9 @@
-//Importamos el model mongoose user.
-var User = require('../models/user'),
-	//Importamos las constantes de respuesta users.
-	users_responses = require('../enums/rest-responses').users,
-	CreateUserService = require('../services/users/create'),
-	GetUserService = require('../services/users/get'),
-	ListUsersService = require('../services/users/list'),
-	UpdateUserService = require('../services/users/update'),
-	DeleteUserService = require('../services/users/delete'),
-	//Importamos la librería underscore que es una utilidad para el uso de objetos, colecciones en JS.
-	_ = require('underscore');
+var users_responses = require('../../../enums/rest-responses').users,
+	CreateUserService = require('../services/create'),
+	GetUserService = require('../services/get'),
+	ListUsersService = require('../services/list'),
+	UpdateUserService = require('../services/update'),
+	DeleteUserService = require('../services/delete');
 
 //Exportamos el objeto controller.
 module.exports = { 

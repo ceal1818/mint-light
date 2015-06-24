@@ -1,6 +1,6 @@
 var _ = require('underscore'),
-	user_model = require('../../models/user'),
-	delete_response = require('../../enums/rest-responses').users.delete;
+	user_model = require('../../../models/user'),
+	delete_response = require('../../../enums/rest-responses').users.delete;
 
 var DeleteUserService = function(){
 };

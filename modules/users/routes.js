@@ -1,7 +1,7 @@
 //Importación de express.
 var express = require('express');
 //Importación e instanciación del controller de users.
-var controller = require('../controllers/users');
+var controller = require('./controllers/users');
 //Instanciación de middleware de routes.
 var router = express.Router();
 

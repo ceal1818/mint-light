@@ -1,6 +1,6 @@
 var _ = require('underscore'),
-	user_model = require('../../models/user'),
-	get_response = require('../../enums/rest-responses').users.get;
+	user_model = require('../../../models/user'),
+	get_response = require('../../../enums/rest-responses').users.get;
 
 var GetUserService = function(){
 };
