@@ -1,13 +1,11 @@
 var _ = require('underscore'),
 	user_model = require('../../../models/user'),
-	put_response = require('../../../enums/rest-responses').users.put;
+	put_response = require('../../../enums/rest-responses').users.put,
+	Service = require('../../../core/service');
+	UpdateUserService = function(){};
 
-var UpdateUserService = function(){
-};
-
-UpdateUserService.prototype = _.extend(UpdateUserService.prototype, {
-	model: user_model,
-
+UpdateUserService.prototype = _.extend({
+	
 	execute: function(data, success, unsuccess){
 		var conditions = data.conditions, 
 			user_data = data.object,
@@ -18,7 +16,7 @@ UpdateUserService.prototype = _.extend(UpdateUserService.prototype, {
 		* La ejecución asincrona de este método hace uso de una función callback 
 		* que recibe como parametros: err y user.
 		*/	
-		this.model.findOne(conditions, function(err, user){
+		this.getModel().findOne(conditions, function(err, user){
 			/*
 			* Si internamente se produce un error, se llama al próximo middleware 
 			* que controla los errores, pasandole un mensaje.
@@ -37,7 +35,7 @@ UpdateUserService.prototype = _.extend(UpdateUserService.prototype, {
 				* La ejecución asincrona de este método hace uso de una función callback 
 				* que recibe como parametros: err y raw.
 				*/	
-				that.model.update({_id: user._id}, user_data, {}, function(err, raw){
+				that.getModel().update({_id: user._id}, user_data, {}, function(err, raw){
 					/*
 					* Si internamente se produce un error, se llama al próximo middleware 
 					* que controla los errores, pasandole un mensaje.
@@ -54,6 +52,6 @@ UpdateUserService.prototype = _.extend(UpdateUserService.prototype, {
 			}
 		});
 	}
-});
+}, Service.prototype);
 
 module.exports = UpdateUserService;

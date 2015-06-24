@@ -1,9 +1,9 @@
-var users_responses = require('../../../enums/rest-responses').users,
-	CreateUserService = require('../services/create'),
+var CreateUserService = require('../services/create'),
 	GetUserService = require('../services/get'),
 	ListUsersService = require('../services/list'),
 	UpdateUserService = require('../services/update'),
-	DeleteUserService = require('../services/delete');
+	DeleteUserService = require('../services/delete'),
+	user_model = require('../../../models/user');
 
 //Exportamos el objeto controller.
 module.exports = { 
@@ -14,9 +14,10 @@ module.exports = {
 	create: function(request, response, next){
 		//Se obtiene el body del request de user.
 		var userJson = request.body,
-			createUserService = new CreateUserService();
+			service = new CreateUserService();
+		service.setModel(user_model);
 
-		createUserService.execute(
+		service.execute(
 			userJson, 
 			function(code, user){
 				response.status(code).json(user);
@@ -31,9 +32,10 @@ module.exports = {
 	* list Método encargado de devolver todas las instancias de la entidad user.
 	*/
 	list: function(request, response, next){
-		var listUsersServices = new ListUsersService();
+		var service = new ListUsersService();
+		service.setModel(user_model);
 
-		listUsersServices.execute(
+		service.execute(
 			{}, 
 			function(code, users){
 				response.status(code).json(users);
@@ -49,9 +51,10 @@ module.exports = {
 	*/
 	getById: function(request, response, next){
 		var id = parseInt(request.params.id),
-			getUserServices = new GetUserService();
+			service = new GetUserService();
+		service.setModel(user_model);
 
-		getUserServices.execute(
+		service.execute(
 			{uid: id}, 
 			function(code, user){
 				response.status(code).json(user);
@@ -73,9 +76,10 @@ module.exports = {
 		*/
 		var id = parseInt(request.params.id),
 			userJson = request.body,
-			updateUserService = new UpdateUserService();
+			service = new UpdateUserService();
+		service.setModel(user_model);
 
-		updateUserService.execute(
+		service.execute(
 			{
 				conditions: {uid : id},
 				object: userJson
@@ -95,9 +99,10 @@ module.exports = {
 	delete: function(request, response, next){
 		//Obtienes el ID del recurso variable que indicas en el querystring de la URL.
 		var id = parseInt(request.params.id)
-			deleteUserService = new DeleteUserService();;
-
-		deleteUserService.execute(
+			service = new DeleteUserService(user_model);
+		service.setModel(user_model);
+		
+		service.execute(
 			{uid : id},
 			function(code, message){
 				response.status(code).send(message);

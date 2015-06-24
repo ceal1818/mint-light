@@ -1,13 +1,10 @@
 var _ = require('underscore'),
-	user_model = require('../../../models/user'),
-	delete_response = require('../../../enums/rest-responses').users.delete;
+	delete_response = require('../../../enums/rest-responses').users.delete,
+	Service = require('../../../core/service'),
+	DeleteUserService = function(){};
 
-var DeleteUserService = function(){
-};
-
-DeleteUserService.prototype = _.extend(DeleteUserService.prototype, {
-	model: user_model,
-
+DeleteUserService.prototype = _.extend({
+	
 	execute: function(data, success, unsuccess){
 		var conditions = {};
 
@@ -17,7 +14,7 @@ DeleteUserService.prototype = _.extend(DeleteUserService.prototype, {
 			conditions = data;
 		}
 
-		this.model.findOne(conditions, function(err, model){
+		this.getModel().findOne(conditions, function(err, model){
 			/*
 			* Si internamente se produce un error, se llama al próximo middleware 
 			* que controla los errores, pasandole un mensaje.
@@ -53,6 +50,6 @@ DeleteUserService.prototype = _.extend(DeleteUserService.prototype, {
 			}
 		});
 	}
-});
+}, Service.prototype);
 
 module.exports = DeleteUserService;

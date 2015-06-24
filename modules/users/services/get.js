@@ -1,12 +1,9 @@
 var _ = require('underscore'),
-	user_model = require('../../../models/user'),
-	get_response = require('../../../enums/rest-responses').users.get;
+	get_response = require('../../../enums/rest-responses').users.get,
+	Service = require('../../../core/service'),
+	GetUserService = function(){};
 
-var GetUserService = function(){
-};
-
-GetUserService.prototype = _.extend(GetUserService.prototype, {
-	model: user_model,
+GetUserService.prototype = _.extend({
 
 	execute: function(data, success, unsuccess){
 		var conditions = {};
@@ -17,7 +14,7 @@ GetUserService.prototype = _.extend(GetUserService.prototype, {
 			conditions = data;
 		}
 
-		this.model.findOne(conditions, function(err, model){		
+		this.getModel().findOne(conditions, function(err, model){		
 			if (err){
 				unsuccess({name: 'internal', message: 'Error list resources.'});
 			}
@@ -31,6 +28,6 @@ GetUserService.prototype = _.extend(GetUserService.prototype, {
 			
 		});
 	}
-});
+}, Service.prototype);
 
 module.exports = GetUserService;

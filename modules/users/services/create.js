@@ -1,17 +1,14 @@
 var _ = require('underscore'),
-	user_model = require('../../../models/user'),
-	post_response = require('../../../enums/rest-responses').users.post;
+	post_response = require('../../../enums/rest-responses').users.post,
+	Service = require('../../../core/service'),
+	CreateUserService = function(){};
 
-var CreateUserService = function(){
-};
-
-CreateUserService.prototype = _.extend(CreateUserService.prototype, {
-	model: user_model,
+CreateUserService.prototype = _.extend({
 
 	execute: function(data, success, unsuccess){
 		var that = this;
 
-		this.model.findOne().sort('-uid').exec(function(err, model){
+		this.getModel().findOne().sort('-uid').exec(function(err, model){
 			/*
 			* Si internamente se produce un error, se llama al próximo middleware 
 			* que controla los errores, pasandole un mensaje.
@@ -24,9 +21,10 @@ CreateUserService.prototype = _.extend(CreateUserService.prototype, {
 			* que guardaremos en la colección users. Guardamos el UID que 
 			* estamos generando.
 			*/
-			_.extend(data, {uid: (model.uid + 1)});
+			var next_id = (model) ? model.uid + 1: 1;
+			_.extend(data, {uid: next_id});
 			//Instanciamos un model mongoose User con los datos del JSON.
-			var user = new that.model(data);
+			var user = that.createModelInstance(data);
 			/*
 			* Se llama al método save de la instancia del model user para guardar 
 			* el documento en MongoDB. El callback que le pasamos como parametro 
@@ -47,6 +45,6 @@ CreateUserService.prototype = _.extend(CreateUserService.prototype, {
 			});
 		});
 	}
-});
+}, Service.prototype)
 
 module.exports = CreateUserService;
