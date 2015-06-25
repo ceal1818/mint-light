@@ -4,6 +4,60 @@ var express = require('express');
 var controller = require('./controllers/users');
 //Instanciación de middleware de routes.
 var router = express.Router();
+var fs = require('fs');
+var _ = require('underscore');
+var Q = require('q');
+var path = require('path');
+
+var module_deferred = Q.defer(),
+	mint_module = {};
+
+fs.readdir(__dirname, function(err, files){
+	var dirs = [];
+	if (err) module_deferred.reject(err);
+	files.forEach(function(file) {
+		if (file == 'controllers' || file == 'services'){
+			dirs.push(file);
+		}
+	});
+	module_deferred.resolve(dirs);
+});
+
+module_deferred.promise.then(
+	function(dirs){
+		dirs.forEach(function(dir){
+			var dirs_deferred = Q.defer();
+			var obj_components = {},
+				obj_attr = {};
+
+			fs.readdir(path.join(__dirname, dir), function(err, files){
+				if (err) dirs_deferred.reject(err);
+
+				files.forEach(function(file){
+					var obj_file = file.substring(0, file.indexOf('.'));
+					obj_components[obj_file] = require("./"+dir+"/"+obj_file);
+				});
+				obj_attr[dir] = obj_components;
+
+				dirs_deferred.resolve(obj_attr);
+			});
+
+			dirs_deferred.promise.then(
+				function(attr){
+					mint_module = _.extend(mint_module, attr);
+					console.log(mint_module);
+				},
+				function(err){
+					console.log(err);
+				}
+			);
+		});
+	}, function(err){
+		console.log(err);
+	}
+);
+
+
 
 /*
 * Se define en una ruta principal los listeners de los métodos get y post. Los métodos que 
