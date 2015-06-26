@@ -6,8 +6,19 @@ var CreateUserService = require('../services/create'),
 	user_model = require('../../../models/user');
 
 //Exportamos el objeto controller.
-module.exports = { 
-	
+module.exports = {
+
+	routes: {
+		'/' : [
+			{method: 'list', http_method: 'get'},
+			{method: 'create', http_method: 'post'}
+		],
+		'/:id' : [
+			{method: 'get', http_method: 'get'},
+			{method: 'update', http_method: 'put'},
+			{method: 'remove', http_method: 'delete'}
+		]		
+	},
 	/*
 	* create Método encargado de crear una instancia de una entidad user.
 	*/
@@ -47,9 +58,9 @@ module.exports = {
 	},
 
 	/*
-	* getById Método encargado de devolver una entidad user por un ID especifico.
+	* get Método encargado de devolver una entidad user por un ID especifico.
 	*/
-	getById: function(request, response, next){
+	get: function(request, response, next){
 		var id = parseInt(request.params.id),
 			service = new GetUserService();
 		service.setModel(user_model);
@@ -96,7 +107,7 @@ module.exports = {
 	/*
 	* delete Método encargado de eliminar una entidad user por un ID especifico.
 	*/
-	delete: function(request, response, next){
+	remove: function(request, response, next){
 		//Obtienes el ID del recurso variable que indicas en el querystring de la URL.
 		var id = parseInt(request.params.id)
 			service = new DeleteUserService(user_model);
