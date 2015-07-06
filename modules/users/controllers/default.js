@@ -34,7 +34,7 @@ module.exports = {
 	* list Método encargado de devolver todas las instancias de la entidad user.
 	*/
 	list: function(request, response, next){
-		var service = new this._services.list();
+		var service = new _services.list();
 		service.setModel(user_model);
 		debugger;
 		service.execute(
