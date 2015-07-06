@@ -1,23 +1,14 @@
-var CreateUserService = require('../services/create'),
-	GetUserService = require('../services/get'),
-	ListUsersService = require('../services/list'),
-	UpdateUserService = require('../services/update'),
-	DeleteUserService = require('../services/delete'),
-	user_model = require('../../../models/user');
+var user_model = require('../../../models/user');
 
 //Exportamos el objeto controller.
 module.exports = {
 
 	routes: {
-		'/' : [
-			{method: 'list', http_method: 'get'},
-			{method: 'create', http_method: 'post'}
-		],
-		'/:id' : [
-			{method: 'get', http_method: 'get'},
-			{method: 'update', http_method: 'put'},
-			{method: 'remove', http_method: 'delete'}
-		]		
+		'GET /' : 'list',
+		'POST /' : 'create',
+		'GET /:id': 'get',
+		'PUT /:id': 'update',
+		'DELETE /:id': 'remove'		
 	},
 	/*
 	* create Método encargado de crear una instancia de una entidad user.
@@ -25,7 +16,7 @@ module.exports = {
 	create: function(request, response, next){
 		//Se obtiene el body del request de user.
 		var userJson = request.body,
-			service = new CreateUserService();
+			service = new this._services.create();
 		service.setModel(user_model);
 
 		service.execute(
@@ -43,9 +34,9 @@ module.exports = {
 	* list Método encargado de devolver todas las instancias de la entidad user.
 	*/
 	list: function(request, response, next){
-		var service = new ListUsersService();
+		var service = new this._services.list();
 		service.setModel(user_model);
-
+		debugger;
 		service.execute(
 			{}, 
 			function(code, users){
@@ -62,7 +53,7 @@ module.exports = {
 	*/
 	get: function(request, response, next){
 		var id = parseInt(request.params.id),
-			service = new GetUserService();
+			service = new this._services.get();
 		service.setModel(user_model);
 
 		service.execute(
@@ -87,7 +78,7 @@ module.exports = {
 		*/
 		var id = parseInt(request.params.id),
 			userJson = request.body,
-			service = new UpdateUserService();
+			service = new this._services.update();
 		service.setModel(user_model);
 
 		service.execute(
@@ -110,7 +101,7 @@ module.exports = {
 	remove: function(request, response, next){
 		//Obtienes el ID del recurso variable que indicas en el querystring de la URL.
 		var id = parseInt(request.params.id)
-			service = new DeleteUserService(user_model);
+			service = new this._services.remove();
 		service.setModel(user_model);
 		
 		service.execute(
