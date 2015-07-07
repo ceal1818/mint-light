@@ -3,7 +3,7 @@ var _ = require('underscore'),
 	Service = require('../../../core/service'),
 	CreateUserService = function(){};
 
-CreateUserService.prototype = _.extend({
+module.exports = {
 
 	execute: function(data, success, unsuccess){
 		var that = this;
@@ -45,6 +45,5 @@ CreateUserService.prototype = _.extend({
 			});
 		});
 	}
-}, Service.prototype)
-
-module.exports = CreateUserService;
+	
+};
