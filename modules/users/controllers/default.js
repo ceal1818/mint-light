@@ -16,7 +16,7 @@ module.exports = {
 	create: function(request, response, next){
 		//Se obtiene el body del request de user.
 		var userJson = request.body,
-			service = new this._services.create();
+			service = new _services.users.create();
 		service.setModel(user_model);
 
 		service.execute(
@@ -34,7 +34,7 @@ module.exports = {
 	* list Método encargado de devolver todas las instancias de la entidad user.
 	*/
 	list: function(request, response, next){
-		var service = new _services.list();
+		var service = new _services.users.list();
 		service.setModel(user_model);
 		debugger;
 		service.execute(
@@ -53,7 +53,7 @@ module.exports = {
 	*/
 	get: function(request, response, next){
 		var id = parseInt(request.params.id),
-			service = new this._services.get();
+			service = new _services.users.get();
 		service.setModel(user_model);
 
 		service.execute(
@@ -78,7 +78,7 @@ module.exports = {
 		*/
 		var id = parseInt(request.params.id),
 			userJson = request.body,
-			service = new this._services.update();
+			service = new _services.users.update();
 		service.setModel(user_model);
 
 		service.execute(
@@ -101,7 +101,7 @@ module.exports = {
 	remove: function(request, response, next){
 		//Obtienes el ID del recurso variable que indicas en el querystring de la URL.
 		var id = parseInt(request.params.id)
-			service = new this._services.remove();
+			service = new _services.users.remove();
 		service.setModel(user_model);
 		
 		service.execute(

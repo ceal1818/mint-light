@@ -28,39 +28,19 @@ function getServices(module, controllers){
 		_files = undefined,
 		that = this;
 	
-	this._services = {};
+	if (_.isEmpty(this._services)){
+		this._services = {
+		};
+	}
+
+	this._services[module] = {};
 
 	_files = fs.readdirSync(path.join(process.cwd(), 'modules', module, 'services'));
 
 	_.forEach(_files, function(_file){
 		var filename = _file.substring(0, _file.indexOf("."));
-		_services[filename] = require("../modules/"+module+'/services/'+filename);
+		this._services[module][filename] = require("../modules/"+module+'/services/'+filename);
 	});
-
-	/*
-	_.forEach(controllerNames, function(controllerName){
-		if (_.has(_services, controllerName)){
-			_.extend(controllers[controllerName], {
-				service: _services[controllerName]
-			});
-		}
-		else if (controllerName == "default"){
-			var serviceNames = _.keys(controllers.default);
-			
-			controllers.default = _.extend(controllers.default, {
-				services:{}
-			});
-			_.forEach(serviceNames, function(serviceName){
-				if (_.has(_services, serviceName)){
-					controllers.default.services[serviceName] = _services[serviceName];
-				}
-			});
-		}
-		else {
-			console.log("error");
-		}
-	});
-	*/
 }
 
 module.exports = {
@@ -98,7 +78,7 @@ module.exports = {
 				}
 			});
 		});
-
+		
 		return router;
 	}
 
